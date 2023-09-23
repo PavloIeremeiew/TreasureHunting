@@ -9,10 +9,13 @@ public class Player : MonoBehaviour
     [SerializeField]private Sprite[] _sprites;
     private int _coinCount = 0;
 
+    private PlayerAnimation _playerAnimation;
+
     public static event Action<int> OnShowCoin;
     public static event Action<bool,int> OnEnd;
     private void Start()
     {
+        _playerAnimation = gameObject.AddComponent<PlayerAnimation>();
         OnShowCoin?.Invoke(_coinCount);
     }
     private void OnEnable()
@@ -42,12 +45,12 @@ public class Player : MonoBehaviour
     }
     private void ChangeRotation(Vector3 vector)
     {
-        Vector3[] vectors= new Vector3[4] { Vector3.up , Vector3.right , Vector3.down , Vector3.left };
+        Vector3[] vectors= new Vector3[4] { Vector3.down,  Vector3.left ,Vector3.up , Vector3.right  };
         for(int i=0; i<vectors.Length; i++)
         {
           if (vector == vectors[i])
           {
-            _spriteRenderer.sprite = _sprites[i];
+                _playerAnimation.SetRotation(i);
              return;
           }
         }
