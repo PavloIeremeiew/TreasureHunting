@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
-    [SerializeField] private GameObject _menuPanel, _pauseButton, _pauseMenu, _endMenu;
+    [SerializeField] private GameObject _menuPanel, _pauseButton, _pauseMenu, _endMenu, _exitBar,_exitBarValue;
     [SerializeField] private Text _coinCounter, _bombCounter, _winCounter;
 
 
@@ -14,14 +14,14 @@ public class UIManager : MonoBehaviour
         Player.OnShowCoin += ShowCoin;
         ChekCell.OnShowBombNumber += ShowBombCount;
         Player.OnEnd += ShowEndMenu;
-
+        HowFarExit.OnSetExitBarValue += SetExitBarValue;
     }
     private void OnDisable()
     {
         Player.OnShowCoin -= ShowCoin;
         ChekCell.OnShowBombNumber -= ShowBombCount;
         Player.OnEnd -= ShowEndMenu;
-
+        HowFarExit.OnSetExitBarValue -= SetExitBarValue;
     }
 
 
@@ -40,6 +40,7 @@ public class UIManager : MonoBehaviour
         _menuPanel.SetActive(false);
         _pauseMenu.SetActive(false);
         _endMenu.SetActive(false);
+        _exitBar.SetActive(true);
     }
     private void ShowCoin(int number)
     {
@@ -64,6 +65,7 @@ public class UIManager : MonoBehaviour
         _pauseButton.SetActive(false);
         _menuPanel.SetActive(true);
         _endMenu.SetActive(true);
+        _exitBar.SetActive(false);
         if (number > 0)
             _winCounter.text = $"{((win) ? "+" : "-")}{number}";
     }
@@ -77,5 +79,8 @@ public class UIManager : MonoBehaviour
         Time.timeScale = 1f;
         SceneManager.LoadScene(Constants.MENU_NAME);
     }
-    
+    private void SetExitBarValue(float value)
+    {
+        _exitBarValue.transform.localScale= new Vector3 (value,1,1);
+    }
 }

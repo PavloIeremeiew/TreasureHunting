@@ -21,28 +21,31 @@ public class MapGenerator : MonoBehaviour
         return cells;
     }
 
-    public void GeneraitExit(Dictionary<Vector2, Cell> cells, float step, int cellCount)
+    public Vector2 GeneraitExit(Dictionary<Vector2, Cell> cells, float step, int cellCount)
     {
-        Vector2 position = new Vector2(0, 0);
+        Vector2 position = new Vector2(0, 0), exitPos= Vector2.zero;
         cells[position].IsCellDone = true;
 
         int i = 0;
         while (i < cellCount)
         {
             Vector2 position1 = position + RundomVector() * step;
-            if (cells.ContainsKey(position1) &&!cells[position1].IsCellDone)
+            if (cells.ContainsKey(position1) && !cells[position1].IsCellDone)
             {
                 position = position1;
-                    
+
                 if (i == cellCount - 1)
                 {
                     cells[position].Type = CellType.ExitCell;
+                    exitPos = position;
                 }
                 i++;
                 cells[position].IsCellDone = true;
             }
 
         }
+         
+        return exitPos; 
     }
     public void SetSaveZone(Dictionary<Vector2, Cell> cells,  float step)
     {
