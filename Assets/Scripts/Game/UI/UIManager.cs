@@ -5,8 +5,8 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
-    [SerializeField] private GameObject _menuPanel, _pauseButton, _pauseMenu, _endMenu, _exitBar,_exitBarValue;
-    [SerializeField] private Text _coinCounter, _bombCounter, _winCounter;
+    [SerializeField] private GameObject _menuPanel, _pauseButton, _pauseMenu, _endMenu, _exitBar,_exitBarValue,_secondTryButton;
+    [SerializeField] private Text _coinCounter, _bombCounter, _winCounter, _secondTryIndexText;
 
 
     private void OnEnable()
@@ -68,6 +68,16 @@ public class UIManager : MonoBehaviour
         _exitBar.SetActive(false);
         if (number > 0)
             _winCounter.text = $"{((win) ? "+" : "-")}{number}";
+        if (!win)
+            ShowLoseMenu();
+    }
+
+    private void ShowLoseMenu()
+    {
+        int trys = LoadMeneger.Load().SecondTrys;
+        _secondTryIndexText.text = "x" + trys;
+        if(trys <= 0)
+            _secondTryIndexText.color = Color.red;
     }
     public void Restart()
     {
@@ -82,5 +92,16 @@ public class UIManager : MonoBehaviour
     private void SetExitBarValue(float value)
     {
         _exitBarValue.transform.localScale= new Vector3 (value,1,1);
+    }
+    public void SecondTry()
+    {
+        int trys = LoadMeneger.Load().SecondTrys;
+        if (trys > 0)
+        {
+            _secondTryButton.SetActive(false);
+            SaveMeneger.AddToSave(MainSave.SecondTrysSet(-1));
+            Continue();
+        }
+        
     }
 }
